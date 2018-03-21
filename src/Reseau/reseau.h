@@ -39,13 +39,13 @@ struct sockaddr_in* sockaddrinit_serv (const int port);
 
 void sockaddrfree (struct sockaddr_in* socketaddr);
 
-long int writereq (const T_Socket socket, const T_Requete requete);
+long int writereq (const T_Socket socket, const T_Requete requete, const struct sockaddr* address, const socklen_t addr_length);
 
-long int writerep (const T_Socket socket, const T_Reponse reponse);
+long int writerep (const T_Socket socket, const T_Reponse reponse, const struct sockaddr* address, const socklen_t addr_length);
 
-T_Requete readreq (const T_Socket socket);
+T_Requete readreq (const T_Socket socket, struct sockaddr* address, socklen_t* addr_length);
 
-T_Reponse readrep (const T_Socket socket);
+T_Reponse readrep (const T_Socket socket, struct sockaddr* address, socklen_t* addr_length);
 
 #endif
 
