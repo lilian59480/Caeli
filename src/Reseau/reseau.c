@@ -10,7 +10,7 @@
  */
 T_Socket soinit()
 {
-    return socket ( AF_INET, SOCK_STREAM, 0 );
+    return socket ( AF_INET, SOCK_DGRAM, 0 );
 }
 
 /**
@@ -84,32 +84,35 @@ void sockaddrfree (struct sockaddr_in* socketaddr)
  * Envoie une requete par le réseau
  * \param[in] socket La socket à utiliser
  * \param[in] requete La requete à envoyer
+ * \param[in] address L'addresse a envoyer la requete
  * \retval long int La taille des données envoyées
  */
-long int writereq (const T_Socket socket, const T_Requete requete)
+long int writereq (const T_Socket socket, const T_Requete requete, const struct sockaddr_in* address)
 {
     T_Buffer buffer;
     long int length;
     reqtostr (buffer, requete);
+    socklen_t addr_length = sizeof(struct sockaddr_in);
     // On va envoyer une réponse
-    CHECK ( length = write (socket, buffer, strlen (buffer) + 1), "ERREUR WRITE");
+    CHECK ( length = sendto (socket, buffer, strlen (buffer) + 1, 0,(struct sockaddr*) address, addr_length), "ERREUR WRITE");
     // On teste si le write est bien passé
     return length;
 }
 
 /**
- * Envoie une réponse par le réseau
+ * Envoie une reponse par le réseau
  * \param[in] socket La socket à utiliser
- * \param[in] reponse La reponse à envoyer
+ * \param[in] reponse La requete à envoyer
  * \retval long int La taille des données envoyées
  */
-long int writerep (const T_Socket socket, const T_Reponse reponse)
+long int writerep (const T_Socket socket, const T_Reponse reponse, const struct sockaddr_in* address)
 {
     T_Buffer buffer;
     long int length;
     reptostr (buffer, reponse);
+    socklen_t addr_length = sizeof(struct sockaddr_in);
     // On va envoyer une réponse
-    CHECK ( length = write (socket, buffer, strlen (buffer) + 1), "ERREUR WRITE");
+    CHECK ( length = sendto (socket, buffer, strlen (buffer) + 1, 0, (struct sockaddr*) address, addr_length), "ERREUR WRITE");
     // On teste si le write est bien passé
     return length;
 }
@@ -117,21 +120,16 @@ long int writerep (const T_Socket socket, const T_Reponse reponse)
 /**
  * Lit une requete par le réseau
  * \param[in] socket La socket à utiliser
+ * \param[out] address L'addresse a envoyer la requete
  * \retval T_Requete La requete reçu
  */
-T_Requete readreq (const T_Socket socket)
+T_Requete readreq (const T_Socket socket, struct sockaddr_in* address)
 {
     T_Buffer buffer;
     T_Requete requete;
     long int length;
-    CHECK (length = read (socket, buffer, BUFF_MAX), "ERREUR READ");
-
-    // Si length est "gal à 0, on essaye de se deconnecter
-    if (length == 0)
-    {
-        return creareq_deconnexion();
-    }
-
+    socklen_t addr_length = sizeof(struct sockaddr);
+    CHECK (length = recvfrom (socket, buffer, BUFF_MAX, 0, (struct sockaddr*) address, &addr_length), "ERREUR READ");
     // On va transformer notre buffer en une structure de type T_Requete
     strtoreq (&requete, buffer);
     return requete;
@@ -140,15 +138,17 @@ T_Requete readreq (const T_Socket socket)
 /**
  * Lit une reponse par le réseau
  * \param[in] socket La socket à utiliser
+ * \param[out] address L'addresse a envoyer la requete
  * \retval T_Reponse La reponse reçu
  */
-T_Reponse readrep (const T_Socket socket)
+T_Reponse readrep (const T_Socket socket, struct sockaddr_in* address)
 {
     T_Buffer buffer;
     T_Reponse reponse;
     long int length;
-    CHECK (length = read (socket, buffer, BUFF_MAX), "ERREUR READ");
-    // On va transformer notre buffer en une structure de type T_Requete
+    socklen_t addr_length = sizeof(struct sockaddr);
+    CHECK (length = recvfrom (socket, buffer, BUFF_MAX, 0, (struct sockaddr*) address, &addr_length), "ERREUR READ");
+    // On va transformer notre buffer en une structure de type T_Reponse
     strtorep (&reponse, buffer);
     return reponse;
 }
