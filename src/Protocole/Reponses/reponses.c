@@ -109,7 +109,7 @@ T_Reponse crearep_pong()
 {
     T_Reponse reponse;
     memset (&reponse, 0, sizeof (T_Reponse) );
-    reponse.identifiant = 500;
+    reponse.identifiant = REP_CODE_PONG;
     reponse.nbr_parametres = 0;
     return reponse;
 }
@@ -122,7 +122,7 @@ T_Reponse crearep_requete_invalide()
 {
     T_Reponse reponse;
     memset (&reponse, 0, sizeof (T_Reponse) );
-    reponse.identifiant = 501;
+    reponse.identifiant = REP_CODE_REQUETE_INVALIDE;
     reponse.nbr_parametres = 0;
     return reponse;
 }
@@ -135,109 +135,42 @@ T_Reponse crearep_acquittement()
 {
     T_Reponse reponse;
     memset (&reponse, 0, sizeof (T_Reponse) );
-    reponse.identifiant = 502;
+    reponse.identifiant = REP_CODE_ACQUITTEMENT;
     reponse.nbr_parametres = 0;
     return reponse;
 }
 
 /**
- * Crée une reponse Ports disponibles
+ * Crée une reponse ok comprenant la réponse
  * \retval T_Reponse La reponse préparée
  */
-T_Reponse crearep_ports_disponibles (unsigned short type, unsigned int port)
+T_Reponse crearep_ok (char* type)
 {
     T_Reponse reponse;
     memset (&reponse, 0, sizeof (T_Reponse) );
-    reponse.identifiant = 503;
-    reponse.nbr_parametres = 2;
+    reponse.identifiant = REP_CODE_OK;
+    reponse.nbr_parametres = 1;
     T_Reponse_parametre param_type;
     strcpy (param_type.nom, "Type");
-    sprintf (param_type.valeur, "%d", type);
+    sprintf (param_type.valeur, "%s", type);
     reponse.parametres[0] = param_type;
-    T_Reponse_parametre param_port;
-    strcpy (param_port.nom, "Port");
-    sprintf (param_port.valeur, "%d", port);
-    reponse.parametres[1] = param_port;
     return reponse;
 }
 
 /**
- * Crée une reponse Nombres de clients
+ * Crée une reponse Erreur compenant le rapport d'erreur
  * \retval T_Reponse La reponse préparée
  */
-T_Reponse crearep_nombre_clients (unsigned long clients)
+T_Reponse crearep_ok (char* type)
 {
     T_Reponse reponse;
     memset (&reponse, 0, sizeof (T_Reponse) );
-    reponse.identifiant = 600;
+    reponse.identifiant = REP_CODE_ERREUR;
     reponse.nbr_parametres = 1;
-    T_Reponse_parametre param_clients;
-    strcpy (param_clients.nom, "Clients");
-    sprintf (param_clients.valeur, "%ld", clients);
-    reponse.parametres[0] = param_clients;
+    T_Reponse_parametre param_type;
+    strcpy (param_type.nom, "Type");
+    sprintf (param_type.valeur, "%s", type);
+    reponse.parametres[0] = param_type;
     return reponse;
 }
 
-/**
- * Crée une reponse Informations client
- * \retval T_Reponse La reponse préparée
- */
-T_Reponse crearep_information_client (char* pseudo, unsigned int port)
-{
-    T_Reponse reponse;
-    memset (&reponse, 0, sizeof (T_Reponse) );
-    reponse.identifiant = 601;
-    reponse.nbr_parametres = 2;
-    T_Reponse_parametre param_pseudo;
-    strcpy (param_pseudo.nom, "Pseudo");
-    sprintf (param_pseudo.valeur, "%s", pseudo);
-    reponse.parametres[0] = param_pseudo;
-    T_Reponse_parametre param_port;
-    strcpy (param_port.nom, "Port");
-    sprintf (param_port.valeur, "%d", port);
-    reponse.parametres[1] = param_port;
-    return reponse;
-}
-
-/**
- * Crée une reponse Joueur pose question
- * \retval T_Reponse La reponse préparée
- */
-T_Reponse crearep_joueur_pose_question (char* joueur)
-{
-    T_Reponse reponse;
-    memset (&reponse, 0, sizeof (T_Reponse) );
-    reponse.identifiant = 602;
-    reponse.nbr_parametres = 1;
-    T_Reponse_parametre param_joueur;
-    strcpy (param_joueur.nom, "Joueur");
-    sprintf (param_joueur.valeur, "%s", joueur);
-    reponse.parametres[0] = param_joueur;
-    return reponse;
-}
-
-/**
- * Crée une reponse Accepter demande de partie
- * \retval T_Reponse La reponse préparée
- */
-T_Reponse crearep_accepter_demande_partie()
-{
-    T_Reponse reponse;
-    memset (&reponse, 0, sizeof (T_Reponse) );
-    reponse.identifiant = 700;
-    reponse.nbr_parametres = 0;
-    return reponse;
-}
-
-/**
- * Crée une reponse Refuser demande de partie
- * \retval T_Reponse La reponse préparée
- */
-T_Reponse crearep_refuser_demande_partie()
-{
-    T_Reponse reponse;
-    memset (&reponse, 0, sizeof (T_Reponse) );
-    reponse.identifiant = 701;
-    reponse.nbr_parametres = 0;
-    return reponse;
-}

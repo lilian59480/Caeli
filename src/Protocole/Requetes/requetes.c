@@ -113,131 +113,27 @@ T_Requete creareq_ping()
 }
 
 /**
- * Crée une requete Deconnexion
+ * Crée une requete de récupération de Température
  * \retval T_Requete La requete préparée
  */
-T_Requete creareq_deconnexion()
+T_Requete creareq_recup_temp()
 {
     T_Requete requete;
     memset (&requete, 0, sizeof (T_Requete) );
-    requete.identifiant = REQ_CODE_DECONNEXION;
+    requete.identifiant = REQ_CODE_RECUP_TEMP;
     requete.nbr_parametres = 0;
     return requete;
 }
 
 /**
- * Crée une requete Connexion serveur central
- * \param[in] pseudo Le pseudo du client
+ * Crée une requete de récupération d'Humidité
  * \retval T_Requete La requete préparée
  */
-T_Requete creareq_connexion_serveur_central (char* pseudo)
+T_Requete creareq_recup_hum()
 {
     T_Requete requete;
     memset (&requete, 0, sizeof (T_Requete) );
-    requete.identifiant = REQ_CODE_CONNEXION_SERVEUR_CENTRAL;
-    requete.nbr_parametres = 1;
-    T_Requete_parametre param_pseudo;
-    strcpy (param_pseudo.nom, "Pseudo");
-    strncpy (param_pseudo.valeur, pseudo, TAILLE_PARAM_MAX - 1);
-    param_pseudo.valeur[TAILLE_PARAM_MAX - 1] = '\0';
-    requete.parametres[0] = param_pseudo;
-    return requete;
-}
-
-/**
- * Crée une requete Nombre de clients connectés
- * \retval T_Requete La requete préparée
- */
-T_Requete creareq_nombre_clients_connectes()
-{
-    T_Requete requete;
-    memset (&requete, 0, sizeof (T_Requete) );
-    requete.identifiant = REQ_CODE_NOMBRE_CLIENTS_CONNECTES;
-    requete.nbr_parametres = 0;
-    return requete;
-}
-
-/**
- * Crée une requete Information client
- * \param[in] index L'index du client
- * \retval T_Requete La requete préparée
- */
-T_Requete creareq_information_client (unsigned long index)
-{
-    T_Requete requete;
-    memset (&requete, 0, sizeof (T_Requete) );
-    requete.identifiant = REQ_CODE_INFORMATION_CLIENT;
-    requete.nbr_parametres = 1;
-    T_Requete_parametre param_index;
-    strcpy (param_index.nom, "Index");
-    sprintf (param_index.valeur, "%ld", index);
-    requete.parametres[0] = param_index;
-    return requete;
-}
-
-/**
- * Crée une requete Passer mode partie
- * \param[in] client_1 Le nom du client 1
- * \param[in] client_2 Le nom du client 2
- * \param[in] client_3 Le nom du client 3
- * \param[in] partenaire Le numéro du partenaire (Entre 1 et 3)
- * \retval T_Requete La requete préparée
- */
-T_Requete creareq_passer_mode_partie (char* client_1, char* client_2, char* client_3, unsigned char partenaire)
-{
-    T_Requete requete;
-    memset (&requete, 0, sizeof (T_Requete) );
-    requete.identifiant = REQ_CODE_PASSER_MODE_PARTIE;
-    requete.nbr_parametres = 4;
-    T_Requete_parametre param_c1;
-    strcpy (param_c1.nom, "Client_1");
-    strncpy (param_c1.valeur, client_1, TAILLE_PARAM_MAX - 1);
-    param_c1.valeur[TAILLE_PARAM_MAX - 1] = '\0';
-    requete.parametres[0] = param_c1;
-    T_Requete_parametre param_c2;
-    strcpy (param_c2.nom, "Client_2");
-    strncpy (param_c2.valeur, client_2, TAILLE_PARAM_MAX - 1);
-    param_c2.valeur[TAILLE_PARAM_MAX - 1] = '\0';
-    requete.parametres[1] = param_c2;
-    T_Requete_parametre param_c3;
-    strcpy (param_c3.nom, "Client_3");
-    strncpy (param_c3.valeur, client_3, TAILLE_PARAM_MAX - 1);
-    param_c3.valeur[TAILLE_PARAM_MAX - 1] = '\0';
-    requete.parametres[2] = param_c3;
-    T_Requete_parametre param_partenaire;
-    strcpy (param_partenaire.nom, "Partenaire");
-    sprintf (param_partenaire.valeur, "%d", partenaire);
-    requete.parametres[3] = param_partenaire;
-    return requete;
-}
-
-/**
- * Crée une requete Port chat
- * \param[in] type Le type de chat
- * \retval T_Requete La requete préparée
- */
-T_Requete creareq_port_chat (unsigned char type)
-{
-    T_Requete requete;
-    memset (&requete, 0, sizeof (T_Requete) );
-    requete.identifiant = REQ_CODE_PORT_CHAT;
-    requete.nbr_parametres = 1;
-    T_Requete_parametre param_type;
-    strcpy (param_type.nom, "Type");
-    sprintf (param_type.valeur, "%d", type);
-    requete.parametres[0] = param_type;
-    return requete;
-}
-
-/**
- * Crée une requete Choix joueur
- * \retval T_Requete La requete préparée
- */
-T_Requete creareq_choix_joueur()
-{
-    T_Requete requete;
-    memset (&requete, 0, sizeof (T_Requete) );
-    requete.identifiant = REQ_CODE_CHOIX_JOUEUR;
+    requete.identifiant = REQ_CODE_RECUP_HUM;
     requete.nbr_parametres = 0;
     return requete;
 }
@@ -247,77 +143,39 @@ T_Requete creareq_choix_joueur()
  * \param[in] equipe Si le joueur est avec (1) ou contre nous (-1)
  * \retval T_Requete La requete préparée
  */
-T_Requete creareq_demande_partie (short equipe)
+T_Requete creareq_ecrire_buzzer (int etat)
 {
     T_Requete requete;
     memset (&requete, 0, sizeof (T_Requete) );
-    requete.identifiant = REQ_CODE_DEMANDE_PARTIE;
+    requete.identifiant = REQ_CODE_ECRIRE_BUZZER;
     requete.nbr_parametres = 1;
-    T_Requete_parametre param_equipe;
-    strcpy (param_equipe.nom, "Equipe");
-    sprintf (param_equipe.valeur, "%d", equipe);
-    requete.parametres[0] = param_equipe;
+    T_Requete_parametre param_etat;
+    strcpy (param_etat.nom, "Etat");
+    sprintf (param_etat.valeur, "%d", etat);
+    requete.parametres[0] = param_etat;
     return requete;
 }
 
 /**
- * Crée une requete Question
- * \param[in] question La question à poser
+ * Crée une requete ecrire led
+ * \param[in] int représentant la LED
+ * \param[in] Etat LED (high=1/low=0)
  * \retval T_Requete La requete préparée
  */
-T_Requete creareq_question (char* question)
+T_Requete creareq_ecrire_led (int couleur, int etat)
 {
     T_Requete requete;
     memset (&requete, 0, sizeof (T_Requete) );
-    requete.identifiant = REQ_CODE_QUESTION;
-    requete.nbr_parametres = 1;
-    T_Requete_parametre param_question;
-    strcpy (param_question.nom, "Question");
-    strncpy (param_question.valeur, question, TAILLE_PARAM_MAX - 1);
-    param_question.valeur[TAILLE_PARAM_MAX - 1] = '\0';
-    requete.parametres[0] = param_question;
-    return requete;
-}
-
-/**
- * Crée une requete Valider réponse
- * \param[in] valide La réponse est valide ou non
- * \param[in] message Un message supplémentaire
- * \retval T_Requete La requete préparée
- */
-T_Requete creareq_valider_reponse (unsigned short valide, char* message)
-{
-    T_Requete requete;
-    memset (&requete, 0, sizeof (T_Requete) );
-    requete.identifiant = REQ_CODE_VALIDER_REPONSE;
+    requete.identifiant = REQ_CODE_ECRIRE_LED;
     requete.nbr_parametres = 2;
-    T_Requete_parametre param_valide;
-    strcpy (param_valide.nom, "Valide");
-    sprintf (param_valide.valeur, "%d", valide);
-    requete.parametres[0] = param_valide;
-    T_Requete_parametre param_message;
-    strcpy (param_message.nom, "Message");
-    strncpy (param_message.valeur, message, TAILLE_PARAM_MAX - 1);
-    param_message.valeur[TAILLE_PARAM_MAX - 1] = '\0';
-    requete.parametres[1] = param_message;
+    T_Requete_parametre param_couleur;
+    strcpy (param_couleur.nom, "Couleur");
+    sprintf (param_couleur.valeur, "%d", couleur);
+    requete.parametres[0] = param_couleur;
+    T_Requete_parametre param_etat;
+    strcpy (param_etat.nom, "Etat");
+    strncpy (param_etat.valeur, "%d", etat);
+    requete.parametres[1] = param_etat;
     return requete;
 }
 
-/**
- * Crée une requete Message chat
- * \param[in] message Le message
- * \retval T_Requete La requete préparée
- */
-T_Requete creareq_message_chat (char* message)
-{
-    T_Requete requete;
-    memset (&requete, 0, sizeof (T_Requete) );
-    requete.identifiant = REQ_CODE_MESSAGE_CHAT;
-    requete.nbr_parametres = 1;
-    T_Requete_parametre param_message;
-    strcpy (param_message.nom, "Message");
-    strncpy (param_message.valeur, message, TAILLE_PARAM_MAX - 1);
-    param_message.valeur[TAILLE_PARAM_MAX - 1] = '\0';
-    requete.parametres[0] = param_message;
-    return requete;
-}

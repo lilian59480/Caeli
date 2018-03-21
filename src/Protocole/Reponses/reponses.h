@@ -15,12 +15,10 @@
 #define REP_CODE_PONG 500
 #define REP_CODE_REQUETE_INVALIDE 501
 #define REP_CODE_ACQUITTEMENT 502
-#define REP_CODE_PORTS_DISPONIBLES 503
-#define REP_CODE_NOMBRE_CLIENTS 600
-#define REP_CODE_INFORMATION_CLIENT 601
-#define REP_CODE_JOUEUR_POSE_QUESTION 602
-#define REP_CODE_ACCEPTER_DEMANDE_PARTIE 700
-#define REP_CODE_REFUSER_DEMANDE_PARTIE 701
+
+#define REP_CODE_OK 600
+#define REP_CODE_ERREUR 601
+
 
 /** Défini la structure d'un parametre */
 typedef struct
@@ -44,11 +42,7 @@ void get_rep_param (const T_Reponse reponse, const char* param, char* resultat);
 T_Reponse crearep_pong();
 T_Reponse crearep_requete_invalide();
 T_Reponse crearep_acquittement();
-T_Reponse crearep_ports_disponibles (unsigned short type, unsigned int port);
-T_Reponse crearep_nombre_clients (unsigned long clients);
-T_Reponse crearep_information_client (char* pseudo, unsigned int port);
-T_Reponse crearep_joueur_pose_question (char* joueur);
-T_Reponse crearep_accepter_demande_partie();
-T_Reponse crearep_refuser_demande_partie();
+T_Reponse crearep_ok (char* type);
+T_Reponse crearep_erreur (char* type);
 
 #endif
