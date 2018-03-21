@@ -21,8 +21,8 @@ add_subdirectory(src/Utilitaires)
 add_subdirectory(src/Serveur)
 add_subdirectory(src/Client)
 
-#add_executable(Caeli_Serveur "src/Serveur/serveur.c")
-#target_link_libraries(Caeli_Serveur Reseau Protocole Utilitaires Serveur ${CMAKE_THREAD_LIBS_INIT})
+add_executable(Caeli_Serveur "src/Serveur/serveur.c")
+target_link_libraries(Caeli_Serveur Reseau Protocole Utilitaires ${CMAKE_THREAD_LIBS_INIT})
 
-#add_executable(Caeli_Client "src/Client/client.c")
-#target_link_libraries(Caeli_Client Reseau Protocole Utilitaires ${CMAKE_THREAD_LIBS_INIT})
+add_executable(Caeli_Client "src/Client/client.c")
+target_link_libraries(Caeli_Client Reseau Protocole Utilitaires ${CMAKE_THREAD_LIBS_INIT})
