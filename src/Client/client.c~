@@ -19,11 +19,7 @@ void deroute (int signal)
     }
 }
 
-/**
- * Fonction Récupération de la température
- * \param[out] float la température 
- * \param[in] la socket de connexion
- */
+
 float recuperer_temperature (const T_Socket socket, struct sockaddr_in* addr_serveur)
 {
     T_Requete requete;
@@ -51,11 +47,6 @@ float recuperer_temperature (const T_Socket socket, struct sockaddr_in* addr_ser
     return temperature;
 }
 
-/**
- * Fonction Récupération de l'humidité
- * \param[out] float la valeur de l'humidité 
- * \param[in] la socket de connexion
- */
 float recuperer_humidite (const T_Socket socket, struct sockaddr_in* addr_serveur)
 {
     T_Requete requete;
@@ -83,15 +74,6 @@ float recuperer_humidite (const T_Socket socket, struct sockaddr_in* addr_serveu
     return humidite;
 }
 
-/**
- * Fonction Récupération de la température
- * \param[out] void 
- * \param[in] la socket de connexion
- * \param[in] rouge
- * \param[in] bleu
- * \param[in] vert
- * \param[in] texte à afficher sur l'écran
- */
 void ecrire_lcd (const T_Socket socket, struct sockaddr_in* addr_serveur, char* texte, char rouge, char vert, char bleu)
 {
     T_Requete requete;
@@ -114,13 +96,6 @@ void ecrire_lcd (const T_Socket socket, struct sockaddr_in* addr_serveur, char* 
     return;
 }
 
-/**
- * Fonction ecriture Led
- * \param[out] void
- * \param[in] la socket de connexion
- * \param[in] type
- * \param[in] l'etat de la led (High/low)
- */
 void ecrire_led (const T_Socket socket, struct sockaddr_in* addr_serveur, int type, int etat)
 {
     T_Requete requete;

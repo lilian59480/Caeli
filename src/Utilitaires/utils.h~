@@ -164,11 +164,15 @@ Elle prend 2 paramètre :
 </table>
 
 
-#### Requete d'éclencher avertisseur sonore (104)
+#### Passer en mode partie (104)
 
-Cette requête sert à demander lenclenchement de l'avertisseur sonore.
+Cette requête sert à demander au serveur central de faire passer les clients spécifiés en mode partie.
 
-Elle prend 1 paramètre :
+Si le client demandé est déjà en partie, le serveur DOIT rejeter la demande.
+
+Tous les clients concernés DOIVENT envoyer la requête, a des fins de contrôle.
+
+Elle prend 4 paramètres :
 
 <table>
   <tr>
@@ -178,10 +182,28 @@ Elle prend 1 paramètre :
     <td>Remarque</td>
   </tr>
   <tr>
-    <td>Etat a affecter au buzzer</td>
-    <td>etat</td>
-    <td>int</td>
+    <td>Premier client</td>
+    <td>Client_1</td>
+    <td>Chaine de caractères</td>
     <td></td>
+  </tr>
+  <tr>
+    <td>Deuxième client</td>
+    <td>Client_2</td>
+    <td>Chaine de caractères</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Troisième client</td>
+    <td>Client_3</td>
+    <td>Chaine de caractères</td>
+    <td></td>
+  </tr>
+  <tr>
+    <td>Partenaire</td>
+    <td>Partenaire</td>
+    <td>Entier court non signé</td>
+    <td>Prends une valeur entre 1 et 3</td>
   </tr>
 </table>
 
@@ -223,11 +245,39 @@ Cette réponse sert à prévenir qu’une requête précédente à été reçu e
 
 Elle ne retourne aucune valeur.
 
+#### Ports disponibles (503)
+
+Cette réponse permet d’avertir le destinataire des ports ouvert sur le client en paramètre de la requête précédente
+
+Elle retourne deux valeurs
+
+<table>
+  <tr>
+    <td>Description</td>
+    <td>Nom</td>
+    <td>Type</td>
+  </tr>
+  <tr>
+    <td>Type</td>
+    <td>Type</td>
+    <td>Entier court non signé</td>
+  </tr>
+  <tr>
+    <td>Port</td>
+    <td>Port</td>
+    <td>Entier non signé</td>
+  </tr>
+</table>
+
+
 ### Réponses entre le serveur central et un client
 
-#### Rep Ok (600)
+#### Nombre de clients (600)
 
-Cette réponse transmet le bon fonctionnement d'une requête.
+Cette réponse transmet le nombre de clients connecté sur le serveur.
+
+Cette réponse ne DOIT être envoyé que par le serveur central.
+
 Elle retourne une valeur
 
 <table>
@@ -237,17 +287,20 @@ Elle retourne une valeur
     <td>Type</td>
   </tr>
   <tr>
-    <td></td>
-    <td>type</td>
-    <td>char*</td>
+    <td>Nombre de clients</td>
+    <td>Clients</td>
+    <td>Entier long non signé</td>
   </tr>
 </table>
 
 
-#### Reponse avec code Erreur (601)
+#### Informations client (601)
 
-Cette réponse transmet le code Erreur dans le cas d'un problème d'éxécution.
-Elle retourne 1 valeur :
+Cette réponse transmet les informations sur un client connecté sur le serveur.
+
+Cette réponse ne DOIT être envoyé que par le serveur central.
+
+Elle retourne plusieurs valeurs : (Certaines restent a définir)
 
 <table>
   <tr>
@@ -256,9 +309,19 @@ Elle retourne 1 valeur :
     <td>Type</td>
   </tr>
   <tr>
-    <td>code d'erreur</td>
-    <td>type</td>
-    <td>char*</td>
+    <td>Pseudo</td>
+    <td>Pseudo</td>
+    <td>Chaine de caractères</td>
+  </tr>
+  <tr>
+    <td>Port de demande</td>
+    <td>Port</td>
+    <td>Entier non signé</td>
+  </tr>
+  <tr>
+    <td>… (A déterminer)</td>
+    <td></td>
+    <td></td>
   </tr>
 </table>
 
