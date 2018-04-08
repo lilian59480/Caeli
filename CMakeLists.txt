@@ -32,3 +32,8 @@ target_link_libraries(Caeli_Serveur Reseau Protocole Utilitaires Materiel ${CMAK
 
 add_executable(Caeli_Client "src/Client/client.c")
 target_link_libraries(Caeli_Client Reseau Protocole Utilitaires Client ${SQLITE3_LIBRARIES} ${CMAKE_THREAD_LIBS_INIT})
+
+# Installation
+install(TARGETS Caeli_Serveur Caeli_Client
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION lib)
