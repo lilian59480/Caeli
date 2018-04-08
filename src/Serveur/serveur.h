@@ -27,6 +27,7 @@
 #include "../Utilitaires/signaux.h"
 #include "../Materiel/grovepi.h"
 #include "../Materiel/grove_rgb_lcd.h"
+#include "../Materiel/grove_dht.h"
 #include "../Materiel/materiel.h"
 
 

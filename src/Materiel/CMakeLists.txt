@@ -1,1 +1,1 @@
-add_library(Materiel STATIC grovepi.c grove_rgb_lcd.c)
+add_library(Materiel STATIC grovepi.c grove_rgb_lcd.c grove_dht.c)
