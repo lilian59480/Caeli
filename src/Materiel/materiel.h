@@ -10,4 +10,6 @@
 #define LED_ACTIVITE 3
 #define LED_ALERTE 2
 
+#define DHT_PIN 7
+
 #endif

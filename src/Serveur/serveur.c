@@ -89,7 +89,7 @@ void traiter_requete_led (T_Socket socket, const struct sockaddr_in* addr, const
     get_req_param (requete, "Etat", texte);
     etat = strtol (texte, NULL, 10);
     pinMode (type, G_OUTPUT);
-    int error;
+    int dw;
     bool led = G_LOW;
 
     if (etat == LED_ON)
@@ -97,9 +97,9 @@ void traiter_requete_led (T_Socket socket, const struct sockaddr_in* addr, const
         led = G_HIGH;
     }
 
-    error = digitalWrite (type, led);
+    dw = digitalWrite (type, led);
 
-    if (error)
+    if (dw == 0)
     {
         // Lancer une erreur
         T_Reponse reponse;
