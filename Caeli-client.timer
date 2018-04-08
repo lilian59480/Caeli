@@ -1,0 +1,11 @@
+[Unit]
+Description=Lance le client Caeli toutes les secondes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5s
+OnUnitInactiveSec=5s
+AccuracySec=1s
+
+[Install]
+WantedBy=multi-user.target

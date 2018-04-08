@@ -1,0 +1,10 @@
+[Unit]
+Description=Client Caeli
+Requires=Caeli-server.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/Caeli_Client
+
+[Install]
+WantedBy=multi-user.target

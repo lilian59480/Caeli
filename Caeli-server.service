@@ -1,0 +1,8 @@
+[Unit]
+Description=Serveur Caeli
+
+[Service]
+ExecStart=/usr/local/bin/Caeli_Serveur
+
+[Install]
+WantedBy=Caeli-client.timer
