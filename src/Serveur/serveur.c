@@ -51,7 +51,12 @@ void deroute_clients (int signal)
  */
 void traiter_requete_humidite (T_Socket socket, const struct sockaddr_in* addr)
 {
-    float humidite = 20.5;
+    float humidite;
+    float unused;
+    GroveDHT dht;
+    dht.module = BLUE_MODULE;
+    dht.pin = DHT_PIN;
+    DHT_getSafeData (&dht, &unused, &humidite);
     T_Buffer type;
     snprintf (type, BUFF_MAX - 1, "%f", humidite);
     T_Reponse reponse;
@@ -66,7 +71,12 @@ void traiter_requete_humidite (T_Socket socket, const struct sockaddr_in* addr)
  */
 void traiter_requete_temperature (T_Socket socket, const struct sockaddr_in* addr)
 {
-    float temperature = 20.5;
+    float temperature;
+    float unused;
+    GroveDHT dht;
+    dht.module = BLUE_MODULE;
+    dht.pin = DHT_PIN;
+    DHT_getSafeData (&dht, &temperature, &unused);
     T_Buffer type;
     snprintf (type, BUFF_MAX - 1, "%f", temperature);
     T_Reponse reponse;
