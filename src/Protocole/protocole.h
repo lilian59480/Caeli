@@ -15,6 +15,7 @@
 /** Taille maximum des paramètres */
 #define TAILLE_PARAM_MAX 250
 
+
 void strcrtonl (char* str);
 void strnltocr (char* str);
 

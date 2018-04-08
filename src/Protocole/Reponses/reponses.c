@@ -161,7 +161,7 @@ T_Reponse crearep_ok (char* type)
  * Crée une reponse Erreur compenant le rapport d'erreur
  * \retval T_Reponse La reponse préparée
  */
-T_Reponse crearep_ok (char* type)
+T_Reponse crearep_erreur (char* type)
 {
     T_Reponse reponse;
     memset (&reponse, 0, sizeof (T_Reponse) );

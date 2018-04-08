@@ -14,7 +14,7 @@
 
 #define REQ_CODE_PING 1
 
-#define REQ_CODE_RECUP_TEMP 100 
+#define REQ_CODE_RECUP_TEMP 100
 #define REQ_CODE_RECUP_HUM 101
 #define REQ_CODE_ECRIRE_LCD 102
 #define REQ_CODE_ECRIRE_LED 103
@@ -43,7 +43,8 @@ void get_req_param (const T_Requete requete, const char* param, char* resultat);
 T_Requete creareq_ping();
 T_Requete creareq_recup_temp();
 T_Requete creareq_recup_hum();
-T_Requete creareq_ecrire_led(int couleur,int etat);
-T_Requete creareq_ecrire_buzzer(int etat);
+T_Requete creareq_ecrire_led (int type, int etat);
+T_Requete creareq_ecrire_lcd (int rouge, int vert, int bleu, char* texte);
+T_Requete creareq_ecrire_buzzer (int etat);
 
 #endif

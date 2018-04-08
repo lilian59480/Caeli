@@ -4,27 +4,6 @@
 #ifndef H_UTILS
 #define H_UTILS
 
-#if 0
-
-// Includes systèmes
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <string.h>
-#include <errno.h>
-#include <sys/types.h>
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <netdb.h>
-#include <signal.h>
-#include <sys/wait.h>
-
-
-// Include libncurses et libcdk
-#include <ncurses.h>
-#include <cdk/cdk.h>
-
-#endif
 
 // Macros
 /** Permet d'utiliser la valeur FALSE au lieu de 0 */

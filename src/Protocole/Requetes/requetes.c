@@ -162,20 +162,50 @@ T_Requete creareq_ecrire_buzzer (int etat)
  * \param[in] Etat LED (high=1/low=0)
  * \retval T_Requete La requete préparée
  */
-T_Requete creareq_ecrire_led (int couleur, int etat)
+T_Requete creareq_ecrire_led (int type, int etat)
 {
     T_Requete requete;
     memset (&requete, 0, sizeof (T_Requete) );
     requete.identifiant = REQ_CODE_ECRIRE_LED;
     requete.nbr_parametres = 2;
     T_Requete_parametre param_couleur;
-    strcpy (param_couleur.nom, "Couleur");
-    sprintf (param_couleur.valeur, "%d", couleur);
+    strcpy (param_couleur.nom, "Type");
+    sprintf (param_couleur.valeur, "%d", type);
     requete.parametres[0] = param_couleur;
     T_Requete_parametre param_etat;
     strcpy (param_etat.nom, "Etat");
-    strncpy (param_etat.valeur, "%d", etat);
+    sprintf (param_etat.valeur, "%d", etat);
     requete.parametres[1] = param_etat;
     return requete;
 }
 
+/**
+ * Crée une requete ecrire led
+ * \param[in] int représentant la LED
+ * \param[in] Etat LED (high=1/low=0)
+ * \retval T_Requete La requete préparée
+ */
+T_Requete creareq_ecrire_lcd (int rouge, int vert, int bleu, char* texte)
+{
+    T_Requete requete;
+    memset (&requete, 0, sizeof (T_Requete) );
+    requete.identifiant = REQ_CODE_ECRIRE_LCD;
+    requete.nbr_parametres = 4;
+    T_Requete_parametre param_couleur_r;
+    strcpy (param_couleur_r.nom, "Rouge");
+    sprintf (param_couleur_r.valeur, "%d", rouge);
+    requete.parametres[0] = param_couleur_r;
+    T_Requete_parametre param_couleur_v;
+    strcpy (param_couleur_v.nom, "Vert");
+    sprintf (param_couleur_v.valeur, "%d", vert);
+    requete.parametres[1] = param_couleur_v;
+    T_Requete_parametre param_couleur_b;
+    strcpy (param_couleur_b.nom, "Bleu");
+    sprintf (param_couleur_b.valeur, "%d", bleu);
+    requete.parametres[2] = param_couleur_b;
+    T_Requete_parametre param_texte;
+    strcpy (param_texte.nom, "Texte");
+    strncpy (param_texte.valeur, texte, TAILLE_PARAM_MAX - 1);
+    requete.parametres[3] = param_texte;
+    return requete;
+}

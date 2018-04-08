@@ -46,15 +46,151 @@ void deroute_clients (int signal)
 }
 
 /**
+ * Fonction d'envoi d'une réponse de humidite
+ * \param socket socket d'envoi de la réponse
+ */
+void traiter_requete_humidite (T_Socket socket, const struct sockaddr_in* addr)
+{
+    float humidite = 20.5;
+    T_Buffer type;
+    snprintf (type, BUFF_MAX - 1, "%f", humidite);
+    T_Reponse reponse;
+    reponse = crearep_ok (type);
+    writerep (socket, reponse, addr);
+    return;
+}
+
+/**
+ * Fonction d'envoi d'une réponse de temperature
+ * \param socket socket d'envoi de la réponse
+ */
+void traiter_requete_temperature (T_Socket socket, const struct sockaddr_in* addr)
+{
+    float temperature = 20.5;
+    T_Buffer type;
+    snprintf (type, BUFF_MAX - 1, "%f", temperature);
+    T_Reponse reponse;
+    reponse = crearep_ok (type);
+    writerep (socket, reponse, addr);
+    return;
+}
+
+/**
+ * Fonction d'envoi d'une réponse pour les leds
+ * \param socket socket d'envoi de la réponse
+ */
+void traiter_requete_led (T_Socket socket, const struct sockaddr_in* addr, const T_Requete requete)
+{
+    T_Buffer texte;
+    int type;
+    int etat;
+    get_req_param (requete, "Type", texte);
+    type = strtol (texte, NULL, 10);
+    get_req_param (requete, "Etat", texte);
+    etat = strtol (texte, NULL, 10);
+    pinMode (type, G_OUTPUT);
+    int error;
+    bool led = G_LOW;
+
+    if (etat == LED_ON)
+    {
+        led = G_HIGH;
+    }
+
+    error = digitalWrite (type, led);
+
+    if (error)
+    {
+        // Lancer une erreur
+        T_Reponse reponse;
+        reponse = crearep_erreur ("Etat led erreur");
+        writerep (socket, reponse, addr);
+        return;
+    }
+
+    T_Reponse reponse;
+    reponse = crearep_ok ("");
+    writerep (socket, reponse, addr);
+    return;
+}
+
+/**
+ * Fonction d'envoi d'une réponse pour le LCD
+ * \param socket socket d'envoi de la réponse
+ */
+void traiter_requete_lcd (T_Socket socket, const struct sockaddr_in* addr, const T_Requete requete)
+{
+    T_Buffer texte;
+    char r, v, b;
+    get_req_param (requete, "Rouge", texte);
+    r = strtol (texte, NULL, 10);
+    get_req_param (requete, "Vert", texte);
+    v = strtol (texte, NULL, 10);
+    get_req_param (requete, "Bleu", texte);
+    b = strtol (texte, NULL, 10);
+    get_req_param (requete, "Texte", texte);
+    GroveLCD lcd = GroveLCD_init();
+    GroveLCD_connect (&lcd);
+
+    if (! GroveLCD_isConnected (&lcd) )
+    {
+        // Lancer une erreur
+        T_Reponse reponse;
+        reponse = crearep_erreur ("LCD non connecte");
+        writerep (socket, reponse, addr);
+        return;
+    }
+
+    int error;
+    error = GroveLCD_setRGB (&lcd, r, v, b);
+
+    if (error)
+    {
+        // Lancer une erreur
+        T_Reponse reponse;
+        reponse = crearep_erreur ("Couleur LCD erreur");
+        writerep (socket, reponse, addr);
+        return;
+    }
+
+    error =  GroveLCD_setText (&lcd, texte);
+
+    if (error)
+    {
+        // Lancer une erreur
+        T_Reponse reponse;
+        reponse = crearep_erreur ("Texte LCD erreur");
+        writerep (socket, reponse, addr);
+        return;
+    }
+
+    T_Reponse reponse;
+    reponse = crearep_ok ("");
+    writerep (socket, reponse, addr);
+    return;
+}
+
+/**
  * Fonction d'envoi d'une réponse "pong"
  * \param socket socket d'envoi de la réponse
  */
-
-void traiter_requete_ping (T_Socket socket, const struct sockaddr_in *addr)
+void traiter_requete_ping (T_Socket socket, const struct sockaddr_in* addr)
 {
     T_Reponse reponse;
     reponse = crearep_pong();
-    writerep (socket, reponse,addr);
+    writerep (socket, reponse, addr);
+    return;
+}
+
+/**
+ * Fonction d'envoi d'une réponse "pong"
+ * \param socket socket d'envoi de la réponse
+ */
+void requete_invalide (T_Socket socket, const struct sockaddr_in* addr)
+{
+    T_Reponse reponse;
+    reponse = crearep_requete_invalide();
+    writerep (socket, reponse, addr);
     return;
 }
 
@@ -65,24 +201,43 @@ void traiter_requete_ping (T_Socket socket, const struct sockaddr_in *addr)
  */
 int dialogue_serveur (T_Socket socket)
 {
-        // Une requete sous forme de structure
-        T_Requete requete;
-        T_Buffer buf;
-        reqtostr(buf,requete);
-        // On va lire la requete envoyé par le client
-        struct sockaddr_in addr;
+    // Une requete sous forme de structure
+    T_Requete requete;
+    T_Buffer buf;
+    reqtostr (buf, requete);
+    // On va lire la requete envoyé par le client
+    struct sockaddr_in addr;
+    requete = readreq (socket, &addr);
+    printf ("Nouvelle requete de %s\n", inet_ntoa (addr.sin_addr) );
 
-        requete = readreq (socket, &addr);
+    // On parcours la liste des requetes qu'on connait
+    switch (requete.identifiant)
+    {
+        case REQ_CODE_PING:
+            traiter_requete_ping (socket, &addr);
+            break;
 
-        printf ("Nouvelle requete de %s\n", inet_ntoa (addr.sin_addr) );
+        case REQ_CODE_RECUP_TEMP:
+            traiter_requete_temperature (socket, &addr);
+            break;
 
-        // On parcours la liste des requetes qu'on connait
-        switch (requete.identifiant)
-        {
-            case REQ_CODE_PING:
-                traiter_requete_ping (socket, &addr);
-                break;
-        }
+        case REQ_CODE_RECUP_HUM:
+            traiter_requete_humidite (socket, &addr);
+            break;
+
+        case REQ_CODE_ECRIRE_LED:
+            traiter_requete_led (socket, &addr, requete);
+            break;
+
+        case REQ_CODE_ECRIRE_LCD:
+            traiter_requete_lcd (socket, &addr, requete);
+            break;
+
+        default:
+            requete_invalide (socket, &addr);
+            break;
+    }
+
     return 0;
 }
 
@@ -107,6 +262,12 @@ int main()
     handle_signal (SIGINT, deroute_serveur, 0);
     handle_signal (SIGUSR1, SIG_IGN, 0);
     stop_serveur = FALSE;
+
+    // Initialiser le materiel
+    if (!initGrovePi() )
+    {
+        return -1;
+    }
 
     // On écoute a présent
     while (!stop_serveur)
