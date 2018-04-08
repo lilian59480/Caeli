@@ -126,21 +126,20 @@ void ecrire_led (const T_Socket socket, struct sockaddr_in* addr_serveur, int ty
 void dialogue (const T_Socket socket, struct sockaddr_in* addr_serveur)
 {
     ecrire_led (socket, addr_serveur, LED_ACTIVITE, LED_ON);
-    T_Buffer loading;
-    sprintf (loading, "%s\n%s", LCD_TEXT_NO_DATA_H, LCD_TEXT_NO_DATA_B);
-    ecrire_lcd (socket, addr_serveur, loading, 0, 0, 255);
+    //T_Buffer loading;
+    //sprintf (loading, "%s\n%s", LCD_TEXT_NO_DATA_H, LCD_TEXT_NO_DATA_B);
+    //ecrire_lcd (socket, addr_serveur, loading, 0, 0, 255);
     // Recuperation de la valeur de temperature
     float temperature = recuperer_temperature (socket, addr_serveur);
-    printf ("%f\n", temperature);
     // Recuperation de la valeur d'humidite
     float humidite = recuperer_humidite (socket, addr_serveur);
-    printf ("%f\n", humidite);
 
     // Ecriture sur le LCD et mise a jour des leds
-    if (temperature != -1 && humidite != -1)
+    if (!isnan(temperature) && !isnan(humidite))
     {
         T_Buffer lcd, lcd_h, lcd_b;
         char r, v, b;
+        int state;
         sprintf (lcd_h, LCD_TEXT_DATA_H, temperature);
         sprintf (lcd_b, LCD_TEXT_DATA_B, humidite);
         sprintf (lcd, "%s\n%s", lcd_h, lcd_b);
@@ -151,16 +150,16 @@ void dialogue (const T_Socket socket, struct sockaddr_in* addr_serveur)
             r = 230;
             v = 160;
             b = 0;
-            ecrire_led (socket, addr_serveur, LED_ALERTE, LED_ON);
+            state = LED_ON;
         }
         else
         {
             r = 0;
             v = 255;
             b = 0;
-            ecrire_led (socket, addr_serveur, LED_ALERTE, LED_OFF);
+            state = LED_OFF;
         }
-
+        ecrire_led (socket, addr_serveur, LED_ALERTE, state);
         ecrire_lcd (socket, addr_serveur, lcd, r, v, b);
     }
 

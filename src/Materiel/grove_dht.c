@@ -25,7 +25,6 @@ void DHT_getSafeData (GroveDHT* dht, float* temp, float* humidity)
         current_retry += 1;
         DHT_getUnsafeData (dht, temp, humidity);
     }
-
 }
 
 /**
@@ -41,7 +40,7 @@ void DHT_getSafeData (GroveDHT* dht, float* temp, float* humidity)
  */
 void DHT_getUnsafeData (GroveDHT* dht, float* temp, float* humidity)
 {
-    writeBlock (DHT_TEMP_CMD, dht->pin, dht->module,0);
+    writeBlock (DHT_TEMP_CMD, dht->pin, dht->module, 0);
     readByte();
     uint8_t data_block[33];
     readBlock (data_block);
@@ -58,9 +57,7 @@ void DHT_getUnsafeData (GroveDHT* dht, float* temp, float* humidity)
 float DHT_fourBytesToFloat (uint8_t* byte_data)
 {
     float output;
-
-    memcpy(&output,byte_data,4);
-    
+    memcpy (&output, byte_data, 4);
     return output;
 }
 

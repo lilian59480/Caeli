@@ -1,5 +1,5 @@
-#ifndef GROVE_RGB_LCD_H
-#define GROVE_RGB_LCD_H
+#ifndef GROVE_DHT_H
+#define GROVE_DHT_H
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -26,7 +26,7 @@ typedef struct
     uint8_t pin;
 } GroveDHT;
 
-void DHT_getSafeData (GroveDHT* dht,float* temp, float* humidity);
+void DHT_getSafeData (GroveDHT* dht, float* temp, float* humidity);
 void DHT_getUnsafeData (GroveDHT* dht, float* temp, float* humidity);
 
 float DHT_fourBytesToFloat (uint8_t* data);

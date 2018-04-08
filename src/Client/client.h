@@ -18,6 +18,7 @@
 #include <pthread.h>
 #include <syslog.h>
 #include <getopt.h>
+#include <math.h>
 
 // Includes locaux
 #include "../Protocole/protocole.h"
