@@ -1,3 +1,25 @@
+/*
+    Copyright (c) 2018 Lilian Petitpas & Hugo Dooms
+
+    Permission is hereby granted, free of charge, to any person obtaining
+    a copy of this software and associated documentation files (the "Software"),
+    to deal in the Software without restriction, including without limitation
+    the rights to use, copy, modify, merge, publish, distribute, sublicense,
+    and/or sell copies of the Software, and to permit persons to whom the Software
+    is furnished to do so, subject to the following conditions:
+
+    The above copyright notice and this permission notice shall be included in
+    all copies or substantial portions of the Software.
+
+    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+    EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+    OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+    IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+    CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+    TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE
+    OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
 /**
  * \file client.c
  */
@@ -21,7 +43,7 @@ void deroute (int signal)
 
 /**
  * Fonction Récupération de la température
- * \param[out] float la température 
+ * \param[out] float la température
  * \param[in] la socket de connexion
  */
 float recuperer_temperature (const T_Socket socket, struct sockaddr_in* addr_serveur)
@@ -53,7 +75,7 @@ float recuperer_temperature (const T_Socket socket, struct sockaddr_in* addr_ser
 
 /**
  * Fonction Récupération de l'humidité
- * \param[out] float la valeur de l'humidité 
+ * \param[out] float la valeur de l'humidité
  * \param[in] la socket de connexion
  */
 float recuperer_humidite (const T_Socket socket, struct sockaddr_in* addr_serveur)
@@ -85,7 +107,7 @@ float recuperer_humidite (const T_Socket socket, struct sockaddr_in* addr_serveu
 
 /**
  * Fonction Récupération de la température
- * \param[out] void 
+ * \param[out] void
  * \param[in] la socket de connexion
  * \param[in] rouge
  * \param[in] bleu
@@ -160,7 +182,7 @@ void dialogue (const T_Socket socket, struct sockaddr_in* addr_serveur)
     float humidite = recuperer_humidite (socket, addr_serveur);
 
     // Ecriture sur le LCD et mise a jour des leds
-    if (!isnan(temperature) && !isnan(humidite))
+    if (!isnan (temperature) && !isnan (humidite) )
     {
         T_Buffer lcd, lcd_h, lcd_b;
         char r, v, b;
@@ -184,6 +206,7 @@ void dialogue (const T_Socket socket, struct sockaddr_in* addr_serveur)
             b = 0;
             state = LED_OFF;
         }
+
         ecrire_led (socket, addr_serveur, LED_ALERTE, state);
         ecrire_lcd (socket, addr_serveur, lcd, r, v, b);
     }
